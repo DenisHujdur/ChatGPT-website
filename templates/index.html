@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>Fråga vad du vill</h1>
+    <div class="chat-window">
+      <div id="chatOutput"></div>
+      <div id="imageOutput" class="image-container"></div> <!-- Container for images -->
+    </div>
+    <input type="text" id="chatInput" placeholder="Skriv din fråga här...">
+    <button id="sendMessageButton">Fråga</button>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
