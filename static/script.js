@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', function() {
   var sendMessageButton = document.getElementById("sendMessageButton");
   var chatInput = document.getElementById("chatInput");
+  var chatOutput = document.getElementById("chatOutput");
+  var imageOutput = document.getElementById("imageOutput");
 
   if (sendMessageButton && chatInput) {
     sendMessageButton.addEventListener("click", sendMessage);
@@ -17,7 +19,6 @@ document.addEventListener('DOMContentLoaded', function() {
     if (userInput.trim() === "") return; // Don't send empty messages
 
     // Display the user's question in the chat window
-    var chatOutput = document.getElementById("chatOutput");
     chatOutput.innerHTML += `<div class="user-message">Du: ${userInput}</div>`;
 
     // Send the user's question to the server
@@ -30,8 +31,24 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.json())
     .then(data => {
+      console.log("Received data from server:", data); // Debugging log
+
       // Display GPT's answer in the chat window
-      chatOutput.innerHTML += `<div class="gpt-message">Nova: ${data.answer || data.error}</div>`;
+      chatOutput.innerHTML += `<div class="gpt-message">Nova: ${data.answer || 'No response from server'}</div>`;
+
+      // Handle image display
+      imageOutput.innerHTML = ''; // Clear previous images
+      if (data.images && data.images.length > 0) {
+        console.log("Attempting to display images:", data.images.length); // Debugging log
+        data.images.forEach(function(base64String) {
+          console.log("Image Base64 Length:", base64String.length); // Debugging log for image data length
+          var img = new Image();
+          img.src = 'data:image/jpeg;base64,' + base64String;
+          img.className = 'response-image';
+          imageOutput.appendChild(img);
+        });
+      }
+
       // Scroll to the bottom of the chat window
       chatOutput.scrollTop = chatOutput.scrollHeight;
     })
