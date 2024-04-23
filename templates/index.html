@@ -13,8 +13,11 @@
       <div id="chatOutput"></div>
       <div id="imageOutput" class="image-container"></div> <!-- Container for images -->
     </div>
-    <input type="text" id="chatInput" placeholder="Skriv din fråga här...">
-    <button id="sendMessageButton">Fråga</button>
+    <!-- Input and button are now inside a div with the class 'input-container' -->
+    <div class="input-container"> 
+      <input type="text" id="chatInput" placeholder="Skriv din fråga här...">
+      <button id="sendMessageButton">Fråga</button>
+    </div>
   </div>
 
   <script src="{{ url_for('static', filename='script.js') }}"></script>
