@@ -42,11 +42,17 @@ def process_pdf(pdf_url):
     embeddings = OpenAIEmbeddings()
     return faiss.FAISS.from_texts(chunks, embeddings)
 
+import os
+
 def fetch_image_from_drive(file_name):
     SCOPES = ['https://www.googleapis.com/auth/drive']
-    SERVICE_ACCOUNT_FILE = 'pdf-python-420718-4a9ce0b58697.json'
+    # Construct the full file path relative to the current script's directory
+    SERVICE_ACCOUNT_FILE = os.path.join(os.path.dirname(__file__), 'pdf-python-420718-4a9ce0b58697.json')
     creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
+    
+    # ... rest of the function ...
+
     
     results = service.files().list(q=f"name contains '{file_name}' and mimeType='image/jpeg'").execute()
     items = results.get('files', [])
@@ -80,15 +86,20 @@ def ask_pdf():
 
     user_question = request.json.get('user_question')
     print(f"Received question: {user_question}")
+
+    # Set the prompt to signal the language for the response
+    prompt_text = f"Följande är ett samtal på svenska.\nFråga: {user_question}\nSvar:"
+    
     docs = knowledgebase.similarity_search(user_question)
     llm = lc_openai.OpenAI()
     chain = load_qa_chain(llm, chain_type="stuff")
-    response = chain.run(input_documents=docs, question=user_question)
+    response = chain.run(input_documents=docs, question=prompt_text)
     print(f"Generated response: {response}")
 
     figure_refs = re.findall(r"figur\s(\d+)", response, re.IGNORECASE)
     images = [fetch_image_from_drive(f"figur_{ref}.jpg") for ref in figure_refs]
     print(f"Images fetched: {len(images)} images found")
+    
     return jsonify({'answer': response, 'images': images})
 
 if __name__ == '__main__':
