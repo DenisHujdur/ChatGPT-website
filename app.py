@@ -51,7 +51,7 @@ def fetch_image_from_drive(file_name):
     creds = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('drive', 'v3', credentials=creds)
     
-    # ... rest of the function ...
+    
 
     
     results = service.files().list(q=f"name contains '{file_name}' and mimeType='image/jpeg'").execute()
