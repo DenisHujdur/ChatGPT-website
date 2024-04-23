@@ -23,7 +23,7 @@ h1 {
 
 .chat-window {
   width: 100%;
-  height: 500px; /* Adjust height to accommodate images */
+  height: 500px;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 15px;
@@ -59,12 +59,12 @@ h1 {
   margin-top: 20px;
 }
 
-.chat-image {
+.response-image {
   max-width: 100%; /* Ensures image is not bigger than the container */
-  max-height: 200px; /* Limits image height */
+  max-height: 200px; /* Controls image height */
   margin-top: 10px; /* Adds space between messages and images */
-  border-radius: 8px; /* Optional: rounds the corners of the images */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: adds shadow for depth */
+  border-radius: 8px; /* Rounds the corners of the images */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds shadow for depth */
 }
 
 input[type="text"] {
@@ -85,15 +85,22 @@ button {
   cursor: pointer;
 }
 
-/* Add hover effect for button */
 button:hover {
   background-color: #218838;
 }
 
-/* Scrollbar styles */
-.chat-window::-webkit-scrollbar {
-  width: 6px;
+.chat-window {
+  width: 90%;              /* This sets the width relative to its container */
+  height: 500px;            /* This sets the fixed height of the chat window */
+  border: 1px solid #ddd;   /* Border around the chat window */
+  border-radius: 8px;       /* Rounded corners */
+  padding: 15px;            /* Padding inside the chat window */
+  background-color: #fff;   /* Background color */
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Inner shadow for depth */
+  overflow-y: auto;         /* Allows scrolling on overflow */
+  margin-bottom: 10px;      /* Space below the chat window */
 }
+
 
 .chat-window::-webkit-scrollbar-track {
   background: #f1f1f1;

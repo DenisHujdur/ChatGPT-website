@@ -7,21 +7,19 @@ document.addEventListener('DOMContentLoaded', function() {
   if (sendMessageButton && chatInput) {
     sendMessageButton.addEventListener("click", sendMessage);
     chatInput.addEventListener("keyup", function(event) {
-      // Number 13 is the "Enter" key on the keyboard
-      if (event.keyCode === 13) {
+      if (event.keyCode === 13) {  // Enter key
         sendMessage();
       }
     });
   }
 
   function sendMessage() {
-    var userInput = chatInput.value;
-    if (userInput.trim() === "") return; // Don't send empty messages
+    var userInput = chatInput.value.trim();
+    if (userInput === "") return;  // Don't send empty messages
 
-    // Display the user's question in the chat window
     chatOutput.innerHTML += `<div class="user-message">Du: ${userInput}</div>`;
+    chatInput.value = '';  // Clear the input box after sending the message
 
-    // Send the user's question to the server
     fetch('/ask_pdf', {
       method: 'POST',
       headers: {
@@ -31,32 +29,24 @@ document.addEventListener('DOMContentLoaded', function() {
     })
     .then(response => response.json())
     .then(data => {
-      console.log("Received data from server:", data); // Debugging log
-
-      // Display GPT's answer in the chat window
       chatOutput.innerHTML += `<div class="gpt-message">Nova: ${data.answer || 'No response from server'}</div>`;
-
-      // Handle image display
-      imageOutput.innerHTML = ''; // Clear previous images
-      if (data.images && data.images.length > 0) {
-        console.log("Attempting to display images:", data.images.length); // Debugging log
-        data.images.forEach(function(base64String) {
-          console.log("Image Base64 Length:", base64String.length); // Debugging log for image data length
-          var img = new Image();
-          img.src = 'data:image/jpeg;base64,' + base64String;
-          img.className = 'response-image';
-          imageOutput.appendChild(img);
-        });
-      }
-
-      // Scroll to the bottom of the chat window
-      chatOutput.scrollTop = chatOutput.scrollHeight;
+      displayImages(data.images);
+      chatOutput.scrollTop = chatOutput.scrollHeight;  // Scroll to the bottom of the chat window
     })
     .catch(error => {
       console.error('Error:', error);
     });
+  }
 
-    // Clear the input box after sending the message
-    chatInput.value = '';
+  function displayImages(images) {
+    imageOutput.innerHTML = '';  // Clear previous images
+    if (images && images.length > 0) {
+      images.forEach(function(base64String) {
+        var img = new Image();
+        img.src = 'data:image/jpeg;base64,' + base64String;
+        img.className = 'response-image';
+        imageOutput.appendChild(img);
+      });
+    }
   }
 });
