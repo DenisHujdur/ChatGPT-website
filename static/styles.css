@@ -22,7 +22,7 @@ h1 {
 }
 
 .chat-window {
-  width: 100%;
+  width: 90%;
   height: 500px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -37,8 +37,8 @@ h1 {
   margin-bottom: 15px;
   padding: 10px;
   border-radius: 20px;
-  display: inline-block;
-  max-width: 80%;
+  display: block; /* Makes the message take the full width of the chat window */
+  width: 80%;
 }
 
 .user-message {
@@ -46,17 +46,21 @@ h1 {
   color: white;
   text-align: left;
   border-bottom-right-radius: 0;
+  float: right; /* Aligns the message to the right */
+  clear: both; /* Prevents floating elements from touching */
 }
 
 .gpt-message {
   background-color: #e9ecef;
   text-align: left;
   border-bottom-left-radius: 0;
-  align-self: flex-end;
+  float: left; /* Aligns the message to the left */
+  clear: both; /* Prevents floating elements from touching */
 }
 
 .image-container {
   margin-top: 20px;
+  clear: both; /* Ensures images do not interfere with the floating elements */
 }
 
 .response-image {
@@ -67,10 +71,16 @@ h1 {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Adds shadow for depth */
 }
 
+/* Input field and button container */
+.input-container {
+  display: flex; /* Align input and button in a row */
+  gap: 10px; /* Add space between input and button */
+  margin-top: 10px; /* Add some space above the input container */
+}
+
 input[type="text"] {
-  width: calc(100% - 120px);
+  flex-grow: 1; /* Input field takes up the available space */
   padding: 10px;
-  margin: 10px 0;
   border: 1px solid #ddd;
   border-radius: 20px;
   box-sizing: border-box;
@@ -79,7 +89,7 @@ input[type="text"] {
 button {
   padding: 10px 20px;
   background-color: #28a745;
-  color: #fff;
+  color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
@@ -89,18 +99,16 @@ button:hover {
   background-color: #218838;
 }
 
-.chat-window {
-  width: 90%;              /* This sets the width relative to its container */
-  height: 500px;            /* This sets the fixed height of the chat window */
-  border: 1px solid #ddd;   /* Border around the chat window */
-  border-radius: 8px;       /* Rounded corners */
-  padding: 15px;            /* Padding inside the chat window */
-  background-color: #fff;   /* Background color */
-  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.05); /* Inner shadow for depth */
-  overflow-y: auto;         /* Allows scrolling on overflow */
-  margin-bottom: 10px;      /* Space below the chat window */
+/* Clear floats */
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
 }
 
+.chat-window::-webkit-scrollbar {
+  width: 6px;
+}
 
 .chat-window::-webkit-scrollbar-track {
   background: #f1f1f1;
